@@ -1,17 +1,6 @@
 # ── Base image ────────────────────────────────────────────────────────────
 FROM python:3.13-slim
 
-# ── System deps ───────────────────────────────────────────────────────────
-# pymupdf needs some native libraries
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        libmupdf-dev \
-        libfreetype6 \
-        libharfbuzz0b \
-        libjpeg62-turbo \
-        libopenjp2-7 \
-    && rm -rf /var/lib/apt/lists/*
-
 # ── Working directory ─────────────────────────────────────────────────────
 WORKDIR /app
 
@@ -19,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ── Copy the parser package source ────────────────────────────────────────
+# ── Copy the parser package source & install it ──────────────────────────
 COPY pyproject.toml .
 COPY src/ src/
 RUN pip install --no-cache-dir .
@@ -34,6 +23,7 @@ ENV PROCESSED_JSON_BUCKET=dcb-credit-processed-json
 ENV PUBSUB_TOPIC=cibil-pdf-parsed
 ENV LOG_LEVEL=INFO
 ENV TEMP_DIR=/tmp/cibil-parser
+ENV PYTHONPATH=/app/service
 
 # ── Expose port ───────────────────────────────────────────────────────────
 EXPOSE 8080
@@ -44,5 +34,4 @@ CMD exec gunicorn \
     --workers 1 \
     --threads 4 \
     --timeout 120 \
-    --chdir /app/service \
-    main:app
+    service.main:app

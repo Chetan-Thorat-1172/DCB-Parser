@@ -23,7 +23,7 @@ from cloudevents.http import from_http
 from cibil_parser.pipeline import parse_pdf, report_to_json
 
 # ── Service config ───────────────────────────────────────────────────────
-from config import (
+from service.config import (
     RAW_PDF_BUCKET,
     PROCESSED_JSON_BUCKET,
     PUBSUB_TOPIC,
