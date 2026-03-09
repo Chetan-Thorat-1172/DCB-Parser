@@ -1,0 +1,38 @@
+# Virtual environment
+.venv/
+
+# Tests (not needed in production image)
+tests/
+
+# Git
+.git/
+.gitignore
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+src/cibil_credit_report_parser.egg-info/
+
+# IDE / editor
+.vscode/
+*.swp
+*.swo
+
+# Temp / build
+build/
+dist/
+*.egg
+
+# Sample files (not needed in the container)
+credit_sample.pdf
+output.json
+layout-page-*.json
+
+# Docs
+README.md
+LICENSE
+
+# Docker
+Dockerfile
+.dockerignore
